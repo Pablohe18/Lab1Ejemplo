@@ -12,19 +12,28 @@ namespace EjemploLab1.DBContext
         private static volatile DefaultConnection Instance;
         private static object syncRoot = new Object();
 
-        public List<Persona> Personas = new List<Persona>();
+        public List<AllPlayers> Jugadores = new List<AllPlayers>();
+        public List<string> Ids = new List<string>();
         public int IDActual { get; set; }
 
-        private DefaultConnection() {
+        private DefaultConnection()
+        {
             IDActual = 0;
         }
 
         public static DefaultConnection getInstance
         {
-            get {
-                if (Instance == null) {
-                    lock (syncRoot) {
-                        if (Instance == null) {
+
+            get
+            {
+
+                if (Instance == null)
+                {
+                    lock (syncRoot)
+                    {
+
+                        if (Instance == null)
+                        {
                             Instance = new DefaultConnection();
                         }
                     }
@@ -32,6 +41,6 @@ namespace EjemploLab1.DBContext
                 return Instance;
             }
         }
+        }
         
     }
-}
