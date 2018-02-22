@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace EjemploLab1
+namespace ejemplolab1
 {
     public class RouteConfig
     {

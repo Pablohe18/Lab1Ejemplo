@@ -1,24 +1,24 @@
-﻿using EjemploLab1.DBContext;
-using EjemploLab1.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ejemplolab1.DBContest;
+using ejemplolab1.Models;
+using System.Net;
+using System.IO;
+using directorios = System.IO;
 
-namespace EjemploLab1.Controllers
+
+namespace ejemplolab1.Controllers
 {
-
-    public class PlayerController : Controller
+    public class JugadorController : Controller
     {
-
-        DefaultConnection db = DefaultConnection.getInstance;
+        DefaultConnection db =  DefaultConnection.getInstance;
         // GET: Jugador
         public ActionResult Index()
         {
-
+     
             return View(db.Jugadores.ToList());
         }
 
@@ -36,12 +36,12 @@ namespace EjemploLab1.Controllers
 
         // POST: Jugador/Create
         [HttpPost]
-        public ActionResult Create([Bind(Include = "Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]AllPlayers jugador)
+        public ActionResult Create([Bind(Include="Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]Jugador jugador)
         {
             try
             {
                 // TODO: Add insert logic here
-                jugador.IDPlayer = ++db.IDActual;
+                jugador.Jugadorid = ++db.IDActual;
                 db.Jugadores.Add(jugador);
                 return RedirectToAction("Index");
             }
@@ -58,7 +58,7 @@ namespace EjemploLab1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AllPlayers jugadorBuscado = db.Jugadores.Find(x => x.IDPlayer == id);
+            Jugador jugadorBuscado = db.Jugadores.Find(x => x.Jugadorid == id);
 
             if (jugadorBuscado == null)
             {
@@ -70,22 +70,22 @@ namespace EjemploLab1.Controllers
 
         // POST: Jugador/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]AllPlayers jugador)
+    [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include="Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]Jugador jugador)
         {
             try
             {
                 // TODO: Add update logic here
-                AllPlayers jugadorbuscado = db.Jugadores.Find(x => x.IDPlayer == jugador.IDPlayer);
+                Jugador jugadorbuscado = db.Jugadores.Find(x => x.Jugadorid == jugador.Jugadorid);
                 if (jugadorbuscado == null)
                 {
                     return HttpNotFound();
                 }
-                jugadorbuscado.Name = jugador.Name;
-                jugadorbuscado.LastName = jugador.LastName;
-                jugadorbuscado.Salary = jugador.Salary;
-                jugadorbuscado.Position = jugador.Position;
-                jugadorbuscado.Equipo = jugador.Equipo;
+                jugadorbuscado.Nombre = jugador.Nombre;
+                jugadorbuscado.Apellido = jugador.Apellido;
+                jugadorbuscado.Salario = jugador.Salario;
+                jugadorbuscado.Posicion = jugador.Posicion;
+                jugadorbuscado.Club = jugador.Club;
                 return RedirectToAction("Index");
             }
             catch
@@ -101,7 +101,7 @@ namespace EjemploLab1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AllPlayers jugadorBuscado = db.Jugadores.Find(x => x.IDPlayer == id);
+            Jugador jugadorBuscado = db.Jugadores.Find(x => x.Jugadorid == id);
 
             if (jugadorBuscado == null)
             {
@@ -118,7 +118,7 @@ namespace EjemploLab1.Controllers
             try
             {
                 // TODO: Add delete logic here
-                db.Jugadores.Remove(db.Jugadores.First(x => x.IDPlayer == id));
+                db.Jugadores.Remove(db.Jugadores.First(x => x.Jugadorid == id));
 
                 return RedirectToAction("Index");
             }
@@ -152,19 +152,19 @@ namespace EjemploLab1.Controllers
                 string extension = Path.GetExtension(archivo.FileName);
                 archivo.SaveAs(pathArchivo);
                 Random miRandom = new Random();
-                string archivoCsv = directory.File.ReadAllText(pathArchivo);
+                string archivoCsv = directorios.File.ReadAllText(pathArchivo);
                 foreach (string lineas in archivoCsv.Split('\n'))
                 {
                     if (!string.IsNullOrEmpty(lineas))
                     {
-                        var model = (new AllPlayers
+                        var model = (new Jugador
                         {
-                            IDPlayer = ++db.IDActual,
-                            Equipo = Convert.ToString(lineas.Split(',')[0]),
-                            LastName = Convert.ToString(lineas.Split(',')[1]),
-                            Name = Convert.ToString(lineas.Split(',')[2]),
-                            Position = Convert.ToString(lineas.Split(',')[3]),
-                            Salary = Convert.ToDouble((lineas.Split(',')[4])),
+                            Jugadorid = ++db.IDActual,
+                            Club = Convert.ToString(lineas.Split(',')[0]),
+                            Apellido = Convert.ToString(lineas.Split(',')[1]),
+                            Nombre = Convert.ToString(lineas.Split(',')[2]),
+                            Posicion = Convert.ToString(lineas.Split(',')[3]),
+                            Salario = Convert.ToDouble((lineas.Split(',')[4])),
 
                         });
                         db.Jugadores.Add(model);
