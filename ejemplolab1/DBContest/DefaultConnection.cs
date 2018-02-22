@@ -1,9 +1,10 @@
-﻿using ejemplolab1.Models;
+﻿using ejemplolab1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using TDA;
+using ejemplolab1.Controllers;
 
 namespace ejemplolab1.DBContest
 {
@@ -12,18 +13,20 @@ namespace ejemplolab1.DBContest
         private static volatile DefaultConnection Instance;
         private static object syncRoot = new Object();
 
-        public List<Jugador> Jugadores = new List<Jugador>();
+        public List<Players> Players = new List<Players>();
         public List<string> Ids = new List<string>();
         public int IDActual { get; set; }
-       
-     private  DefaultConnection(){
-     IDActual=0;
-    }
+
+        private DefaultConnection()
+        {
+            IDActual = 0;
+        }
 
         public static DefaultConnection getInstance
         {
 
-            get{
+            get
+            {
 
                 if (Instance == null)
                 {
@@ -40,6 +43,6 @@ namespace ejemplolab1.DBContest
             }
         }
 
-    
+
     }
 }

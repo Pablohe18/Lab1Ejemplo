@@ -1,0 +1,87 @@
+﻿@model ejemplolab1.Models.Jugador
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+            table th {
+                background-color: #B8DBFD;
+                Color: #333;
+                font-weight: bold;
+            }
+
+            table th, table td {
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+
+            table, table table td {
+                border: 0px solid #ccc;
+            }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("CargarArchivo", "Jugador", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div>
+            <input type="file" name="archivo" />
+            <input type="submit" value="Importar" />
+
+
+            @Html.ActionLink("Ir a Home", "Index", "Home")
+        </div>
+
+
+    }
+    @if (Model.Count() > 0)
+    {
+        <hr />
+        <table cellpadding="100" cellspacing="100">
+            <tr>
+                <th>Club</th>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>Posicion</th>
+                <th>Salario</th>
+            </tr>
+
+            @foreach (var jugadores in Model)
+            {
+                <tr>
+                    <td>@jugadores.Club</td>
+                    <td>@jugadores.Apellido</td>
+                    <td>@jugadores.Nombre</td>
+                    <td>@jugadores.Posicion</td>
+                    <td>@jugadores.Salario</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = jugadores.Jugadorid }) |
+                        @Html.ActionLink("Details", "Details", new { id = jugadores.Jugadorid }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = jugadores.Jugadorid })
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</body>
+</html>
+
+
+

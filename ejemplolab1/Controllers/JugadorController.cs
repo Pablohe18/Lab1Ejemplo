@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ejemplolab1.DBContest;
-using ejemplolab1.Models;
 using System.Net;
 using System.IO;
 using directorios = System.IO;
@@ -19,7 +18,7 @@ namespace ejemplolab1.Controllers
         public ActionResult Index()
         {
      
-            return View(db.Jugadores.ToList());
+            return View(db.Players.ToList());
         }
 
         // GET: Jugador/Details/5
@@ -36,13 +35,13 @@ namespace ejemplolab1.Controllers
 
         // POST: Jugador/Create
         [HttpPost]
-        public ActionResult Create([Bind(Include="Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]Jugador jugador)
+        public ActionResult Create([Bind(Include="Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]Players jugador)
         {
             try
             {
                 // TODO: Add insert logic here
-                jugador.Jugadorid = ++db.IDActual;
-                db.Jugadores.Add(jugador);
+                jugador.IDJ = ++db.IDActual;
+                db.Players.Add(jugador);
                 return RedirectToAction("Index");
             }
             catch
@@ -58,8 +57,7 @@ namespace ejemplolab1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Jugador jugadorBuscado = db.Jugadores.Find(x => x.Jugadorid == id);
-
+            Players jugadorBuscado = db.Players.Find(x => x.IDJ == id);
             if (jugadorBuscado == null)
             {
 
@@ -71,21 +69,21 @@ namespace ejemplolab1.Controllers
         // POST: Jugador/Edit/5
         [HttpPost]
     [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]Jugador jugador)
+        public ActionResult Edit([Bind(Include="Jugadorid,Nombre,Apellido,Salario,Posicion,Club")]Players jugador)
         {
             try
             {
                 // TODO: Add update logic here
-                Jugador jugadorbuscado = db.Jugadores.Find(x => x.Jugadorid == jugador.Jugadorid);
+                Players jugadorbuscado = db.Players.Find(x => x.IDJ == jugador.IDJ);
                 if (jugadorbuscado == null)
                 {
                     return HttpNotFound();
                 }
-                jugadorbuscado.Nombre = jugador.Nombre;
-                jugadorbuscado.Apellido = jugador.Apellido;
-                jugadorbuscado.Salario = jugador.Salario;
-                jugadorbuscado.Posicion = jugador.Posicion;
-                jugadorbuscado.Club = jugador.Club;
+                jugadorbuscado.Name = jugador.Name;
+                jugadorbuscado.LastName = jugador.LastName;
+                jugadorbuscado.Salary = jugador.Salary;
+                jugadorbuscado.Position = jugador.Position;
+                jugadorbuscado.Team = jugador.Team;
                 return RedirectToAction("Index");
             }
             catch
@@ -101,7 +99,7 @@ namespace ejemplolab1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Jugador jugadorBuscado = db.Jugadores.Find(x => x.Jugadorid == id);
+            Players jugadorBuscado = db.Players.Find(x => x.IDJ == id);
 
             if (jugadorBuscado == null)
             {
@@ -118,7 +116,7 @@ namespace ejemplolab1.Controllers
             try
             {
                 // TODO: Add delete logic here
-                db.Jugadores.Remove(db.Jugadores.First(x => x.Jugadorid == id));
+                db.Players.Remove(db.Players.First(x => x.IDJ == id));
 
                 return RedirectToAction("Index");
             }
@@ -157,17 +155,17 @@ namespace ejemplolab1.Controllers
                 {
                     if (!string.IsNullOrEmpty(lineas))
                     {
-                        var model = (new Jugador
+                        var model = (new Players
                         {
-                            Jugadorid = ++db.IDActual,
-                            Club = Convert.ToString(lineas.Split(',')[0]),
-                            Apellido = Convert.ToString(lineas.Split(',')[1]),
-                            Nombre = Convert.ToString(lineas.Split(',')[2]),
-                            Posicion = Convert.ToString(lineas.Split(',')[3]),
-                            Salario = Convert.ToDouble((lineas.Split(',')[4])),
+                            IDJ = ++db.IDActual,
+                            Team = Convert.ToString(lineas.Split(',')[0]),
+                            LastName = Convert.ToString(lineas.Split(',')[1]),
+                            Name = Convert.ToString(lineas.Split(',')[2]),
+                            Position = Convert.ToString(lineas.Split(',')[3]),
+                            Salary = Convert.ToDouble((lineas.Split(',')[4])),
 
                         });
-                        db.Jugadores.Add(model);
+                        db.Players.Add(model);
                     }
                 }
             }
